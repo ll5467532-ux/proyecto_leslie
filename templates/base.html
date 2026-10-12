@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}API Dashboard{% endblock %}</title>
+    
+    <!-- Fuentes e Íconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS Global e Integrado -->
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding-bottom: 40px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-brand i { color: var(--primary); }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+            background-color: #eff6ff;
+        }
+
+        /* Layout & Cards */
+        .content {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .page-head {
+            margin-bottom: 1.5rem;
+        }
+
+        .page-head h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-head .subtitle {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Botones generales */
+        .btn-sm {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: #fff;
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-sm:hover { background: #f1f5f9; }
+        .btn-sm.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .btn-sm.primary:hover { background: var(--primary-hover); }
+        .btn-sm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .empty {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body data-page="{% block page %}{% endblock %}">
+
+    <nav class="navbar">
+        <a class="nav-brand" href="/"><i class="fa-solid fa-layer-group"></i> API Dashboard</a>
+        <ul class="nav-links">
+            <li><a href="/" class="{{ 'active' if request.path == '/' }}"><i class="fa-solid fa-house"></i> Inicio</a></li>
+            <li><a href="/marketplaces" class="{{ 'active' if request.path == '/marketplaces' }}"><i class="fa-solid fa-store"></i> Marketplaces</a></li>
+            <li><a href="/cuentas" class="{{ 'active' if request.path == '/cuentas' }}"><i class="fa-solid fa-users"></i> Cuentas</a></li>
+            <li><a href="/autenticaciones" class="{{ 'active' if request.path == '/autenticaciones' }}"><i class="fa-solid fa-key"></i> Autenticaciones</a></li>
+            <li><a href="/endpoints" class="{{ 'active' if request.path == '/endpoints' }}"><i class="fa-solid fa-network-wired"></i> Endpoints</a></li>
+            <li><a href="/historial" class="{{ 'active' if request.path == '/historial' }}"><i class="fa-solid fa-clock-rotate-left"></i> Historial</a></li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

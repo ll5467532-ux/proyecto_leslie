@@ -1,0 +1,381 @@
+{% extends "base.html" %}
+
+{% block title %}Marketplaces · API Dashboard{% endblock %}
+
+{% block content %}
+<style>
+  /* Contenedor principal */
+  .marketplaces-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  /* Tarjetas de estadísticas */
+  .mp-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .stat-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  }
+
+  .stat-card .label {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .stat-card .val {
+    font-size: 1.75rem;
+    color: #0f172a;
+    font-weight: 700;
+    margin-top: 0.35rem;
+  }
+
+  /* Barra de herramientas / Filtros */
+  .toolbar-panel {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  }
+
+  .toolbar-panel input,
+  .toolbar-panel select {
+    padding: 0.65rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    background-color: #ffffff;
+  }
+
+  .toolbar-panel input[type="search"] {
+    flex: 1;
+    min-width: 260px;
+  }
+
+  /* Grid de Tarjetas */
+  .mp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .mp-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .mp-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.08);
+    border-color: #3b82f6;
+  }
+
+  .mp-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .mp-icon {
+    width: 50px;
+    height: 50px;
+    background: #eff6ff;
+    color: #2563eb;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .mp-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #0f172a;
+    line-height: 1.3;
+  }
+
+  .mp-desc {
+    font-size: 0.9rem;
+    color: #64748b;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+
+  .mp-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  /* Estilos del Modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(2px);
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-box {
+    background: #ffffff;
+    border-radius: 14px;
+    width: 90%;
+    max-width: 500px;
+    padding: 2rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .form-group label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #334155;
+  }
+  .form-group input, .form-group select {
+    padding: 0.75rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+  }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+</style>
+
+<div class="marketplaces-wrapper">
+  <!-- Cabecera con Botón Funcional -->
+  <div class="page-header">
+    <div>
+      <h1>Marketplaces</h1>
+      <p>Plataformas soportadas, conectores de e-Commerce y configuración de canales.</p>
+    </div>
+    <button type="button" class="btn btn-primary" id="btn-open-modal">
+      ➕ Nuevo Marketplace
+    </button>
+  </div>
+
+  <!-- Métricas -->
+  <div class="mp-stats">
+    <div class="stat-card">
+      <div class="label">Total Plataformas</div>
+      <div class="val" id="stat-total">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Endpoints registrados</div>
+      <div class="val" id="stat-activos" style="color: #16a34a;">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Estado del catálogo</div>
+      <div class="val" style="color: #2563eb; font-size: 1.25rem; margin-top: 0.6rem;">🟢 Operativo</div>
+    </div>
+  </div>
+
+  <!-- Barra de Filtros -->
+  <div class="toolbar-panel">
+    <input type="search" id="mp-search" placeholder="Buscar marketplace (ej. Shopify, Amazon)..." />
+    <button class="btn btn-secondary" id="mp-btn-reset">Limpiar Filtros</button>
+  </div>
+
+  <!-- Contenedor Principal de Tarjetas -->
+  <div id="marketplaces-container">
+    <p style="padding: 3rem; color: #64748b; text-align: center; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0;">
+      Cargando marketplaces...
+    </p>
+  </div>
+</div>
+
+<!-- Modal para Crear Nuevo Marketplace -->
+<div class="modal-overlay" id="add-mp-modal">
+  <div class="modal-box">
+    <h3 style="margin-bottom: 0.25rem; color: #0f172a; font-size: 1.25rem;">Agregar Nuevo Marketplace</h3>
+    <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 1.5rem;">Registra un nuevo canal o conector de venta.</p>
+
+    <form id="add-mp-form">
+      <div class="form-group">
+        <label for="new-mp-nombre">Nombre de la Plataforma *</label>
+        <input type="text" id="new-mp-nombre" placeholder="Ej. Walmart, Magento, Mercado Libre" required />
+      </div>
+
+      <div class="form-group">
+        <label for="new-mp-tipo">Autenticación habitual</label>
+        <select id="new-mp-tipo">
+          <option value="otro">Por configurar</option>
+          <option value="api_key">API Key</option>
+          <option value="bearer">Bearer Token</option>
+          <option value="oauth2">OAuth 2.0</option>
+          <option value="basic">Basic Auth</option>
+        </select>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="btn-close-modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar Marketplace</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('marketplaces-container');
+    const searchInput = document.getElementById('mp-search');
+    const btnReset = document.getElementById('mp-btn-reset');
+
+    // Elementos del Modal
+    const btnOpenModal = document.getElementById('btn-open-modal');
+    const btnCloseModal = document.getElementById('btn-close-modal');
+    const modal = document.getElementById('add-mp-modal');
+    const addForm = document.getElementById('add-mp-form');
+
+    let cacheData = [];
+    const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    }[c]));
+
+    async function cargarMarketplaces() {
+      try {
+        const res = await fetch('/api/marketplaces/detalle');
+        const json = await res.json();
+
+        if (json.ok && json.data) {
+          cacheData = json.data.map(item => ({
+            id: Number(item.id),
+            nombre: item.nombre,
+            estado: 'activo',
+            tipo: item.auth_tipo || 'otro',
+            endpoints_count: Number(item.endpoints || 0),
+            cuentas: Number(item.cuentas || 0)
+          }));
+
+          renderMarketplaces(cacheData);
+        } else {
+          container.innerHTML = '<div style="padding: 3rem; text-align: center; color: #64748b; background: #fff; border-radius: 12px;">No hay marketplaces configurados.</div>';
+        }
+      } catch (e) {
+        container.innerHTML = '<div style="padding: 3rem; text-align: center; color: #ef4444; background: #fff; border-radius: 12px;">Error al conectar con la API.</div>';
+      }
+    }
+
+    function renderMarketplaces(items) {
+      document.getElementById('stat-total').textContent = items.length;
+      document.getElementById('stat-activos').textContent = items.reduce((total, item) => total + Number(item.endpoints_count || 0), 0);
+
+      if (items.length === 0) {
+        container.innerHTML = '<div style="padding: 3rem; text-align: center; color: #64748b; background: #fff; border-radius: 12px;">No se encontraron coincidencias.</div>';
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="mp-grid">
+          ${items.map(mp => `
+            <div class="mp-card">
+              <div>
+                <div class="mp-header">
+                  <div class="mp-icon">🛍️</div>
+                  <div>
+                    <div class="mp-title">${esc(mp.nombre)}</div>
+                    <span class="badge badge-success" style="margin-top: 0.25rem; display: inline-block;">Activo</span>
+                  </div>
+                </div>
+                <div class="mp-desc">
+                  Integración lista con <strong>${mp.endpoints_count} endpoints</strong> registrados y <strong>${mp.cuentas} cuentas</strong> configuradas.
+                </div>
+              </div>
+              <div class="mp-footer">
+                <span style="font-size: 0.85rem; color: #64748b; font-weight: 500;">${esc(mp.tipo || 'otro')}</span>
+                <a href="/endpoints?marketplace=${encodeURIComponent(mp.nombre)}" class="btn btn-secondary btn-sm">Explorar &rarr;</a>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function aplicarFiltros() {
+      const q = searchInput.value.toLowerCase().trim();
+      const filtrados = cacheData.filter(mp => mp.nombre.toLowerCase().includes(q));
+
+      renderMarketplaces(filtrados);
+    }
+
+    // Modal Control
+    btnOpenModal.addEventListener('click', () => modal.classList.add('active'));
+    btnCloseModal.addEventListener('click', () => modal.classList.remove('active'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+
+    // El marketplace solo se agrega si el backend confirma que MySQL lo guardó.
+    addForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('new-mp-nombre').value.trim();
+      const auth_tipo = document.getElementById('new-mp-tipo').value;
+      if (!nombre) return;
+
+      const submit = addForm.querySelector('button[type="submit"]');
+      submit.disabled = true;
+      try {
+        const res = await fetch('/api/marketplaces', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, auth_tipo })
+        });
+        const json = await res.json();
+        if (!res.ok || !json.ok) throw new Error(json.error || 'No se pudo guardar el marketplace.');
+        modal.classList.remove('active');
+        addForm.reset();
+        await cargarMarketplaces();
+      } catch (err) {
+        alert(err.message || 'No se pudo guardar el marketplace.');
+      } finally {
+        submit.disabled = false;
+      }
+    });
+
+    searchInput.addEventListener('input', aplicarFiltros);
+    btnReset.addEventListener('click', () => {
+      searchInput.value = '';
+      renderMarketplaces(cacheData);
+    });
+
+    cargarMarketplaces();
+  });
+</script>
+<script src="{{ url_for('static', filename='modulos.js') }}"></script>
+{% endblock %}

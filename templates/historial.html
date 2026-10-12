@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+
+{% block title %}Historial · API Dashboard{% endblock %}
+
+{% block content %}
+<style>
+  .historial-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Filtros con espaciado amplio */
+  .filter-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  }
+
+  .filter-card input,
+  .filter-card select {
+    padding: 0.65rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+  }
+
+  .filter-card input[type="search"] {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  /* Mejoras en la Tabla para evitar filas apretadas */
+  .table-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  }
+
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  td {
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 0.925rem;
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background-color: #f8fafc;
+  }
+
+  .status-badge {
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 20px;
+    display: inline-block;
+  }
+  .status-200, .status-201 { background: #dcfce7; color: #15803d; }
+  .status-400, .status-401, .status-404 { background: #fef3c7; color: #92400e; }
+  .status-500 { background: #fee2e2; color: #991b1b; }
+
+  /* Modal de detalles de respuesta */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    backdrop-filter: blur(2px);
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-box {
+    background: #ffffff;
+    border-radius: 14px;
+    width: 90%;
+    max-width: 650px;
+    padding: 2rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  .modal-box pre {
+    background: #0f172a;
+    color: #38bdf8;
+    padding: 1.25rem;
+    border-radius: 10px;
+    overflow-x: auto;
+    font-size: 0.875rem;
+    max-height: 280px;
+    margin-top: 0.5rem;
+  }
+</style>
+
+<div class="historial-wrapper">
+  <!-- Cabecera -->
+  <div class="page-header">
+    <div>
+      <h1>Historial de Ejecuciones</h1>
+      <p>Monitoreo en tiempo real de llamadas HTTP, códigos de estado y respuestas.</p>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+      <button type="button" class="btn btn-secondary btn-sm" id="hist-refresh">🔄 Actualizar</button>
+      <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('¿Vaciar historial?')) alert('Historial limpiado');">🗑️ Limpiar Logs</button>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filter-card">
+    <input type="search" id="hist-search" placeholder="Buscar por endpoint o URL (ej. /api/v1/orders)..." />
+    <select id="hist-cuenta">
+      <option value="">Todas las cuentas</option>
+    </select>
+    <select id="hist-method">
+      <option value="">Todos los métodos</option>
+      <option value="GET">GET</option>
+      <option value="POST">POST</option>
+      <option value="PUT">PUT</option>\n      <option value="PATCH">PATCH</option>
+      <option value="DELETE">DELETE</option>
+    </select>
+    <span id="hist-count" style="margin-left: auto; color: #64748b; font-size: 0.875rem; font-weight: 600;">0 registros</span>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-card">
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha / Hora</th>
+            <th>Cuenta</th>
+            <th>Método</th>
+            <th>Endpoint</th>
+            <th>Estado</th>
+            <th style="text-align: right;">Acción</th>
+          </tr>
+        </thead>
+        <tbody id="hist-list">
+          <tr>
+            <td colspan="6" style="text-align: center; color: #64748b; padding: 2.5rem;">Cargando historial…</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para inspeccionar payload -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal-box">
+    <h3 style="margin-bottom: 0.5rem; color: #0f172a; font-size: 1.25rem;" id="modal-title">Detalle de la petición</h3>
+    <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1.5rem;" id="modal-sub"></p>
+    
+    <label style="font-size: 0.85rem; font-weight: 600; color: #475569;">Respuesta / Payload JSON:</label>
+    <pre id="modal-json"><code>{}</code></pre>
+    
+    <div style="text-align: right; margin-top: 1.5rem;">
+      <button class="btn btn-secondary" id="modal-close">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const $ = id => document.getElementById(id);
+  const list = $('hist-list');
+  const count = $('hist-count');
+  const accountFilter = $('hist-cuenta');
+  const methodFilter = $('hist-method');
+  const search = $('hist-search');
+  const modal = $('detail-modal');
+  let logs = [];
+
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[c]));
+
+  async function getJSON(url) {
+    const response = await fetch(url);
+    const data = await response.json();
+    if (!response.ok || !data.ok) throw new Error(data.error || `Error HTTP ${response.status}`);
+    return data;
+  }
+
+  async function cargarCuentas() {
+    try {
+      const json = await getJSON('/api/cuentas');
+      accountFilter.innerHTML = '<option value="">Todas las cuentas</option>' +
+        (json.data || []).map(c => `<option value="${Number(c.id)}">${esc(c.nombre)} (${esc(c.marketplace)})</option>`).join('');
+    } catch (e) {
+      console.error('No se pudieron cargar las cuentas', e);
+    }
+  }
+
+  async function cargarHistorial() {
+    list.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem">Cargando historial real…</td></tr>';
+    try {
+      const query = new URLSearchParams({limit: '200'});
+      if (accountFilter.value) query.set('cuenta_id', accountFilter.value);
+      const json = await getJSON('/api/historial?' + query);
+      logs = json.data || [];
+      render();
+    } catch (e) {
+      logs = [];
+      list.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:#b91c1c">${esc(e.message)}</td></tr>`;
+      count.textContent = 'Error';
+    }
+  }
+
+  function render() {
+    const q = search.value.trim().toLowerCase();
+    const method = methodFilter.value;
+    const filtered = logs.filter(item =>
+      (!q || `${item.endpoint || ''} ${item.cuenta || ''} ${item.marketplace || ''}`.toLowerCase().includes(q)) &&
+      (!method || item.method === method)
+    );
+    count.textContent = `${filtered.length} registro${filtered.length === 1 ? '' : 's'}`;
+    if (!filtered.length) {
+      list.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:#64748b">No hay ejecuciones registradas con esos filtros.</td></tr>';
+      return;
+    }
+    list.innerHTML = filtered.map(item => {
+      const status = item.status == null ? 'Error de conexión' : `HTTP ${item.status}`;
+      const statusClass = item.status >= 200 && item.status < 300 ? 'status-200' : 'status-400';
+      return `<tr>
+        <td><span style="font-size:.875rem;color:#64748b">${esc(item.fecha || '—')}</span></td>
+        <td><strong>${esc(item.cuenta || '—')}</strong><br><small>${esc(item.marketplace || '')}</small></td>
+        <td><span class="method-badge method-${esc(String(item.method || 'GET').toLowerCase())}">${esc(item.method || '—')}</span></td>
+        <td><code>${esc(item.endpoint || '—')}</code></td>
+        <td><span class="status-badge ${statusClass}">${esc(status)}</span><br><small>${Number(item.duracion_ms || 0)} ms</small></td>
+        <td style="text-align:right"><button class="btn btn-secondary btn-sm js-detail" data-id="${Number(item.id)}">🔍 Detalle</button></td>
+      </tr>`;
+    }).join('');
+  }
+
+  list.addEventListener('click', async ev => {
+    const button = ev.target.closest('.js-detail');
+    if (!button) return;
+    button.disabled = true;
+    try {
+      const json = await getJSON(`/api/historial/${Number(button.dataset.id)}`);
+      const item = json.data;
+      $('modal-title').textContent = `Detalle de ejecución #${item.id}`;
+      $('modal-sub').textContent = 'Solicitud y respuesta guardadas en la base de datos. Los valores sensibles se muestran enmascarados.';
+      $('modal-json').textContent = JSON.stringify({
+        solicitud: item.request_body,
+        headers: item.headers,
+        respuesta: parseResponse(item.respuesta)
+      }, null, 2);
+      modal.classList.add('active');
+    } catch (e) {
+      alert('No se pudo cargar el detalle: ' + e.message);
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  function parseResponse(value) {
+    if (typeof value !== 'string') return value;
+    try { return JSON.parse(value); } catch (_) { return value; }
+  }
+
+  $('modal-close').addEventListener('click', () => modal.classList.remove('active'));
+  modal.addEventListener('click', ev => { if (ev.target === modal) modal.classList.remove('active'); });
+  $('hist-refresh').addEventListener('click', cargarHistorial);
+  search.addEventListener('input', render);
+  methodFilter.addEventListener('change', render);
+  accountFilter.addEventListener('change', cargarHistorial);
+  cargarCuentas().then(cargarHistorial);
+});
+</script>
+<script src="{{ url_for('static', filename='modulos.js') }}"></script>
+{% endblock %}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 .dashboard-hero {
     margin-bottom: 2.5rem;
@@ -90,3 +91,282 @@
   .dash-card:hover .card-action {
     text-decoration: underline;
   }
+=======
+/* ==========================================
+   VARIABLES Y CONFIGURACIÓN GENERAL
+   ========================================== */
+:root {
+    --bg-main: #0f172a;
+    --bg-panel: #1e293b;
+    --bg-card: #1e293b;
+    --bg-input: #0f172a;
+    
+    --border-color: #334155;
+    --border-hover: #475569;
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-label: #64748b;
+    
+    --accent-blue: #38bdf8;
+    --accent-blue-hover: #0284c7;
+    
+    /* Colores Métodos HTTP */
+    --method-get: #10b981;
+    --method-post: #3b82f6;
+    --method-put: #f59e0b;
+    --method-delete: #ef4444;
+
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.5;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+}
+
+/* ==========================================
+   CONTENEDOR PRINCIPAL
+   ========================================== */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+h1 span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--accent-blue);
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+}
+
+/* ==========================================
+   PANEL DE FILTROS Y BÚSQUEDA
+   ========================================== */
+.panel {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    margin-bottom: 1.5rem;
+}
+
+.section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-label);
+    margin-bottom: 0.5rem;
+}
+
+/* Pills / Píldoras de Selección */
+.mkt-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.mkt-pill {
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.4rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.mkt-pill:hover {
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+}
+
+.mkt-pill.active {
+    background-color: #1e293b;
+    border-color: var(--accent-blue);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 1px var(--accent-blue);
+}
+
+.mkt-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Pills de Métodos */
+.method-pill {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+}
+
+.method-pill[data-method="GET"].active { border-color: var(--method-get); color: var(--method-get); box-shadow: 0 0 0 1px var(--method-get); }
+.method-pill[data-method="POST"].active { border-color: var(--method-post); color: var(--method-post); box-shadow: 0 0 0 1px var(--method-post); }
+.method-pill[data-method="PUT"].active { border-color: var(--method-put); color: var(--method-put); box-shadow: 0 0 0 1px var(--method-put); }
+
+/* Campo de Búsqueda */
+.search-row {
+    position: relative;
+    width: 100%;
+}
+
+.search-row input {
+    width: 100%;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 2.5rem;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-family: var(--font-sans);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-row input:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+.search-row input::placeholder {
+    color: #475569;
+}
+
+/* Spinner de Búsqueda */
+.search-spinner {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: var(--accent-blue);
+    display: none;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Botones de Acción */
+.btn-row {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+button {
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-buscar {
+    background-color: var(--accent-blue);
+    color: #0f172a;
+}
+
+.btn-buscar:hover {
+    background-color: var(--accent-blue-hover);
+    color: #ffffff;
+}
+
+.btn-limpiar {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.btn-limpiar:hover {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+}
+
+/* ==========================================
+   RESULTADOS Y TARJETAS (CARDS)
+   ========================================== */
+.results-info {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    padding-left: 0.25rem;
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Estilo para las tarjetas que generes con JS */
+.card-endpoint {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.card-endpoint:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+}
+
+.badge-method {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.badge-method.get { background: rgba(16, 185, 129, 0.15); color: var(--method-get); }
+.badge-method.post { background: rgba(59, 130, 246, 0.15); color: var(--method-post); }
+.badge-method.put { background: rgba(245, 158, 11, 0.15); color: var(--method-put); }
+.badge-method.delete { background: rgba(239, 68, 68, 0.15); color: var(--method-delete); }
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e

@@ -12,6 +12,10 @@ body {
     color: #333;
 }
 
+<<<<<<< HEAD
+=======
+/* ───────── Navbar ───────── */
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -47,6 +51,10 @@ body {
     color: #ffffff;
 }
 
+<<<<<<< HEAD
+=======
+/* ───────── Dropdown ───────── */
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 .dropdown {
     position: relative;
 }
@@ -109,6 +117,10 @@ body {
     transition: transform 0.3s;
 }
 
+<<<<<<< HEAD
+=======
+/* ───────── Contenido ───────── */
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 .content {
     padding: 2rem;
     max-width: 1200px;
@@ -144,6 +156,10 @@ body {
     border-radius: 10px;
 }
 
+<<<<<<< HEAD
+=======
+/* ───────── Formularios ───────── */
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 .card {
     background: #fff;
     border-radius: 10px;
@@ -194,7 +210,11 @@ input:focus, select:focus, textarea:focus {
 
 .form-msg { color: #dc2626; font-size: 0.9rem; }
 
+<<<<<<< HEAD
 /* botones */
+=======
+/* ───────── Botones ───────── */
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 .btn-sm {
     display: inline-flex;
     align-items: center;
@@ -225,6 +245,10 @@ input:focus, select:focus, textarea:focus {
 .btn-icon:hover { color: #dc2626; background: #fee2e2; }
 .btn-icon svg { width: 18px; height: 18px; }
 
+<<<<<<< HEAD
+=======
+/* Interruptor activar/desactivar */
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 .switch {
     position: relative;
     width: 40px;
@@ -249,6 +273,10 @@ input:focus, select:focus, textarea:focus {
 .switch[aria-checked="true"] { background: #16a34a; }
 .switch[aria-checked="true"]::after { transform: translateX(18px); }
 
+<<<<<<< HEAD
+=======
+/* ───────── Tablas ───────── */
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 .table-wrap {
     background: #fff;
     border-radius: 10px;
@@ -300,7 +328,11 @@ code {
     white-space: nowrap;
 }
 
+<<<<<<< HEAD
 
+=======
+/* Detalle expandible del historial */
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 tr.detail td { background: #f8fafc; }
 .detail-grid {
     display: grid;
@@ -320,6 +352,10 @@ tr.detail td { background: #f8fafc; }
     word-break: break-all;
 }
 
+<<<<<<< HEAD
+=======
+/* ───────── Badges ───────── */
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 .badge {
     display: inline-block;
     padding: 0.15rem 0.6rem;
@@ -351,6 +387,10 @@ tr.detail td { background: #f8fafc; }
 .badge-method.m-PATCH { background: #9333ea; }
 .badge-method.m-DELETE { background: #dc2626; }
 
+<<<<<<< HEAD
+=======
+/* ───────── Tarjetas de marketplaces / inicio ───────── */
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -402,6 +442,10 @@ tr.detail td { background: #f8fafc; }
 .home-card i { font-size: 1.5rem; color: #2563eb; }
 .home-card p { color: #64748b; font-size: 0.9rem; }
 
+<<<<<<< HEAD
+=======
+/* ───────── Avisos (toast) ───────── */
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 #toast-box {
     position: fixed;
     right: 1rem;

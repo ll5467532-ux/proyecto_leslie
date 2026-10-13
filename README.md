@@ -85,6 +85,7 @@ El sistema ejecuta peticiones HTTP genéricas. No puede garantizar que todos los
 - No compartas tokens, contraseñas, `.env` ni la clave `FERNET_KEY`.
 - Las solicitudes tienen un timeout para evitar esperas indefinidas y no siguen redirecciones automáticamente.
 - Ejecuta esta aplicación en un entorno controlado; antes de exponerla en Internet agrega autenticación/autorización de usuarios, protección CSRF y restricciones de red adecuadas.
+<<<<<<< HEAD
 
 
 ## 4. Organización del frontend
@@ -126,3 +127,5 @@ static/
 - `static/modulos.js`: funciones compartidas del proyecto.
 
 Los archivos `.env`, la carpeta `.git` y los archivos temporales de Python no se incluyen en el ZIP. Crea tu propio `.env` a partir de `.env.example` y agrega ahí tus datos locales; no compartas contraseñas ni tokens.
+=======
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e

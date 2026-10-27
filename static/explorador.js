@@ -1,4 +1,7 @@
+<<<<<<< HEAD
+=======
 // Menú desplegable y secciones: marketplaces, cuentas, autenticaciones e historial.
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 (function () {
   'use strict';
 
@@ -17,7 +20,10 @@
   const state = { mks: [], cuentas: [], auths: [] };
   const loaded = {};
 
+<<<<<<< HEAD
+=======
   // ───────────── Utilidades ─────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -110,7 +116,10 @@
     if (prev && Array.prototype.some.call(sel.options, (o) => o.value === prev)) sel.value = prev;
   }
 
+<<<<<<< HEAD
+=======
   // ───────────── Marketplaces ─────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   async function loadMarketplaces() {
     const j = await api('/api/marketplaces/detalle');
     state.mks = j.data;
@@ -286,7 +295,11 @@
     });
   }
 
+<<<<<<< HEAD
+  
+=======
   // ───────────── Autenticaciones ─────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   function vence(r) {
     if (!r.expira_en) return '<span class="badge muted">Sin vencimiento</span>';
     const d = new Date(r.expira_en);
@@ -359,7 +372,10 @@
     });
   }
 
+<<<<<<< HEAD
+=======
   // ───────────── Historial ─────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   function estadoHttp(code) {
     if (code == null) return '<span class="badge muted">Sin respuesta</span>';
     const c = Number(code);
@@ -446,7 +462,10 @@
       refresh('historial').then(() => toast('Historial actualizado')).catch((err) => toast(err.message, true)));
   }
 
+<<<<<<< HEAD
+=======
   // ───────────── Navegación ─────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   const loaders = {
     marketplaces: loadMarketplaces, cuentas: loadCuentas,
     autenticaciones: loadAuths, historial: loadHistorial,
@@ -485,7 +504,10 @@
     }
   }
 
+<<<<<<< HEAD
+=======
   // ───────────── Menú Desplegable ─────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   if (menu && btn && dd) {
     const items = () => Array.prototype.slice.call(menu.querySelectorAll('li[data-section]'));
     items().forEach((li) => { li.tabIndex = -1; });

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
+=======
 // Menú desplegable y secciones: marketplaces, cuentas, autenticaciones e historial.
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 (function () {
   'use strict';
 
@@ -11,7 +14,10 @@
   const state = { mks: [], cuentas: [], auths: [] };
   const loaded = {};
 
+<<<<<<< HEAD
+=======
   // ───────────── Utilidades ─────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -104,7 +110,10 @@
     if (prev && Array.prototype.some.call(sel.options, (o) => o.value === prev)) sel.value = prev;
   }
 
+<<<<<<< HEAD
+=======
   // ───────────── Marketplaces ─────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   async function loadMarketplaces() {
     const j = await api('/api/marketplaces/detalle');
     state.mks = j.data;
@@ -185,7 +194,10 @@
     });
   }
 
+<<<<<<< HEAD
+=======
   // ───────────── Cuentas ─────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   async function loadCuentas() {
     const r = await Promise.all([api('/api/marketplaces/detalle'), api('/api/cuentas')]);
     state.mks = r[0].data;
@@ -261,7 +273,10 @@
     });
   }
 
+<<<<<<< HEAD
+=======
   // ───────────── Autenticaciones ─────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   function vence(r) {
     if (!r.expira_en) return '<span class="badge muted">Sin vencimiento</span>';
     const d = new Date(r.expira_en);
@@ -421,7 +436,10 @@
       refresh('historial').then(() => toast('Historial actualizado')).catch((err) => toast(err.message, true)));
   }
 
+<<<<<<< HEAD
+=======
   // ───────────── Navegación ─────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   const loaders = {
     marketplaces: loadMarketplaces, cuentas: loadCuentas,
     autenticaciones: loadAuths, historial: loadHistorial,
@@ -442,7 +460,10 @@
     box.innerHTML = '<p class="empty">' + esc(m) + '</p>';
   }
 
+<<<<<<< HEAD
+=======
   // Cada página es independiente: carga solo su propio módulo.
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   const pagina = document.body.dataset.page;
   if (loaders[pagina]) {
     refresh(pagina).catch((e) => showError(pagina, e));

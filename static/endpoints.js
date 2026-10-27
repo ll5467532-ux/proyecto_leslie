@@ -1,4 +1,7 @@
+<<<<<<< HEAD
+=======
 // Página de Endpoints: búsqueda con filtros sobre /api/endpoints.
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 (function () {
   'use strict';
 

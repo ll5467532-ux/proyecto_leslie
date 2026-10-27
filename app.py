@@ -19,16 +19,25 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0  # Evita CSS/JS viejos en caché
 CORS(app)
 
+<<<<<<< HEAD
+TABLA = "endpoints_v2"
+METODOS_VALIDOS = {"GET", "POST", "PUT", "PATCH", "DELETE"}
+
+=======
 # 1. Nombre de la tabla y métodos válidos
 TABLA = "endpoints_v2"
 METODOS_VALIDOS = {"GET", "POST", "PUT", "PATCH", "DELETE"}
 
 # 2. Columnas pertenecientes a la tabla endpoints_v2 (incluimos id)
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 COLUMNAS = """
     id, marketplace, endpoint, method, description, params, body, source_url
 """
 
+<<<<<<< HEAD
+=======
 # Configuración del Pool de Conexiones a la BD 'marketplaces'
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 pool = pooling.MySQLConnectionPool(
     pool_name="flask_pool",
     pool_size=10,
@@ -59,9 +68,12 @@ def error_bd(e):
     return jsonify({"ok": False, "error": f"Error interno de BD: {str(e)}"}), 500
 
 
+<<<<<<< HEAD
+=======
 # ═══════════════════════════════════════════════════════════
 #  Rutas de Vistas HTML
 # ═══════════════════════════════════════════════════════════
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 
 @app.route("/")
 def index():
@@ -88,9 +100,13 @@ def vista_historial():
     return render_template("historial.html")
 
 
+<<<<<<< HEAD
+
+=======
 # ═══════════════════════════════════════════════════════════
 #  API REST
 # ═══════════════════════════════════════════════════════════
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 
 @app.route("/api")
 def api_index():
@@ -234,9 +250,12 @@ def get_stats():
     return jsonify({"ok": True, "data": rows})
 
 
+<<<<<<< HEAD
+=======
 # ═══════════════════════════════════════════════════════════
 #  Marketplaces, cuentas, autenticaciones e historial
 # ═══════════════════════════════════════════════════════════
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 
 class ConfigError(Exception):
     """Falta configuración del servidor."""
@@ -359,7 +378,11 @@ def _sincronizar_marketplaces(cursor):
             existentes.add(nombre.lower())
 
 
+<<<<<<< HEAD
+
+=======
 # ── Marketplaces ───────────────────────────────────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 @app.route("/api/marketplaces/detalle", methods=["GET"])
 def marketplaces_detalle():
     with get_cursor() as cursor:
@@ -398,7 +421,10 @@ def crear_marketplace():
     return jsonify({"ok": True, "id": nuevo_id}), 201
 
 
+<<<<<<< HEAD
+=======
 # ── Cuentas ────────────────────────────────────────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 @app.route("/api/cuentas", methods=["GET"])
 def listar_cuentas():
     marketplace_id = request.args.get("marketplace_id", type=int)
@@ -485,7 +511,11 @@ def borrar_cuenta(cuenta_id):
     return jsonify({"ok": True})
 
 
+<<<<<<< HEAD
+
+=======
 # ── Autenticaciones ─────────────────────────────────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 @app.route("/api/autenticaciones", methods=["GET"])
 def listar_autenticaciones():
     with get_cursor() as cursor:
@@ -557,7 +587,10 @@ def borrar_autenticacion(auth_id):
 
 
 
+<<<<<<< HEAD
+=======
 # ── Ejecución real de endpoints y registro en historial ──────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 def _cargar_json_config(valor, predeterminado):
     """Convierte JSON guardado en la BD; conserva texto plano si no es JSON."""
     if valor is None or valor == "":
@@ -727,7 +760,11 @@ def ejecutar_endpoint(endpoint_id):
                                      ensure_ascii=False)
 
     duracion_ms = int((time.perf_counter() - inicio) * 1000)
+<<<<<<< HEAD
+
+=======
     # Se guardan headers enmascarados; no se persisten tokens ni secretos en claro.
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
     headers_registro = _mask(headers)
     request_body_registro = {
         "url": url,
@@ -771,7 +808,11 @@ def ejecutar_endpoint(endpoint_id):
     }), 200
 
 
+<<<<<<< HEAD
+
+=======
 # ── Historial ──────────────────────────────────────────────
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 @app.route("/api/historial", methods=["GET"])
 def listar_historial():
     cuenta_id = request.args.get("cuenta_id", type=int)

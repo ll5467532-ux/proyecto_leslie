@@ -85,3 +85,47 @@ El sistema ejecuta peticiones HTTP genéricas. No puede garantizar que todos los
 - No compartas tokens, contraseñas, `.env` ni la clave `FERNET_KEY`.
 - Las solicitudes tienen un timeout para evitar esperas indefinidas y no siguen redirecciones automáticamente.
 - Ejecuta esta aplicación en un entorno controlado; antes de exponerla en Internet agrega autenticación/autorización de usuarios, protección CSRF y restricciones de red adecuadas.
+<<<<<<< HEAD
+
+
+## 4. Organización del frontend
+
+El HTML, CSS y JavaScript están separados para que sea más sencillo mantener el proyecto:
+
+```text
+templates/
+  base.html
+  index.html
+  marketplaces.html
+  cuentas.html
+  autenticaciones.html
+  endpoints.html
+  historial.html
+
+static/
+  CSS/
+    base.css
+    index.css
+    marketplaces.css
+    cuentas.css
+    autenticaciones.css
+    endpoints.css
+    historial.css
+  JS/
+    marketplaces.js
+    cuentas.js
+    autenticaciones.js
+    endpoints.js
+    historial.js
+  modulos.js
+```
+
+- `templates/`: estructura HTML y bloques de Jinja de Flask.
+- `static/CSS/base.css`: estilos generales compartidos por todas las páginas.
+- `static/CSS/<página>.css`: estilos particulares de cada pantalla.
+- `static/JS/<página>.js`: eventos, llamadas a la API y comportamiento de cada pantalla.
+- `static/modulos.js`: funciones compartidas del proyecto.
+
+Los archivos `.env`, la carpeta `.git` y los archivos temporales de Python no se incluyen en el ZIP. Crea tu propio `.env` a partir de `.env.example` y agrega ahí tus datos locales; no compartas contraseñas ni tokens.
+=======
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e

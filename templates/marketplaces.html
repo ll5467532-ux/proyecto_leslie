@@ -1,3 +1,34 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplaces · API Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/marketplaces.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a class="nav-brand" href="/"><i class="fa-solid fa-layer-group"></i> API Dashboard</a>
+        <ul class="nav-links">
+            <li><a href="/" class="{{ 'active' if request.path == '/' }}"><i class="fa-solid fa-house"></i> Inicio</a></li>
+            <li><a href="/marketplaces" class="{{ 'active' if request.path == '/marketplaces' }}"><i class="fa-solid fa-store"></i> Marketplaces</a></li>
+            <li><a href="/cuentas" class="{{ 'active' if request.path == '/cuentas' }}"><i class="fa-solid fa-users"></i> Cuentas</a></li>
+            <li><a href="/autenticaciones" class="{{ 'active' if request.path == '/autenticaciones' }}"><i class="fa-solid fa-key"></i> Autenticaciones</a></li>
+            <li><a href="/endpoints" class="{{ 'active' if request.path == '/endpoints' }}"><i class="fa-solid fa-network-wired"></i> Endpoints</a></li>
+            <li><a href="/historial" class="{{ 'active' if request.path == '/historial' }}"><i class="fa-solid fa-clock-rotate-left"></i> Historial</a></li>
+        </ul>
+    </nav>
+
+    <main class="content">
+=======
 {% extends "base.html" %}
 
 {% block title %}Marketplaces · API Dashboard{% endblock %}
@@ -180,6 +211,7 @@
   }
 </style>
 
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 <div class="marketplaces-wrapper">
   <!-- Cabecera con Botón Funcional -->
   <div class="page-header">
@@ -192,7 +224,11 @@
     </button>
   </div>
 
+<<<<<<< HEAD
+
+=======
   <!-- Métricas -->
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   <div class="mp-stats">
     <div class="stat-card">
       <div class="label">Total Plataformas</div>
@@ -200,6 +236,15 @@
     </div>
     <div class="stat-card">
       <div class="label">Endpoints registrados</div>
+<<<<<<< HEAD
+      <div class="val" id="stat-activos" class="html-style-1">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Estado del catálogo</div>
+      <div class="val html-style-2">🟢 Operativo</div>
+    </div>
+  </div>
+=======
       <div class="val" id="stat-activos" style="color: #16a34a;">0</div>
     </div>
     <div class="stat-card">
@@ -209,24 +254,37 @@
   </div>
 
   <!-- Barra de Filtros -->
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
   <div class="toolbar-panel">
     <input type="search" id="mp-search" placeholder="Buscar marketplace (ej. Shopify, Amazon)..." />
     <button class="btn btn-secondary" id="mp-btn-reset">Limpiar Filtros</button>
   </div>
 
+<<<<<<< HEAD
+  <div id="marketplaces-container">
+    <p class="html-style-3">
+=======
   <!-- Contenedor Principal de Tarjetas -->
   <div id="marketplaces-container">
     <p style="padding: 3rem; color: #64748b; text-align: center; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0;">
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
       Cargando marketplaces...
     </p>
   </div>
 </div>
 
+<<<<<<< HEAD
+<div class="modal-overlay" id="add-mp-modal">
+  <div class="modal-box">
+    <h3 class="html-style-4">Agregar Nuevo Marketplace</h3>
+    <p class="html-style-5">Registra un nuevo canal o conector de venta.</p>
+=======
 <!-- Modal para Crear Nuevo Marketplace -->
 <div class="modal-overlay" id="add-mp-modal">
   <div class="modal-box">
     <h3 style="margin-bottom: 0.25rem; color: #0f172a; font-size: 1.25rem;">Agregar Nuevo Marketplace</h3>
     <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 1.5rem;">Registra un nuevo canal o conector de venta.</p>
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
 
     <form id="add-mp-form">
       <div class="form-group">
@@ -252,6 +310,14 @@
     </form>
   </div>
 </div>
+<<<<<<< HEAD
+    </main>
+
+    <script src="{{ url_for('static', filename='JS/marketplaces.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='modulos.js') }}" defer></script>
+</body>
+</html>
+=======
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -379,3 +445,4 @@
 </script>
 <script src="{{ url_for('static', filename='modulos.js') }}"></script>
 {% endblock %}
+>>>>>>> 301fc290d96af19bcc36fa2a3dbf51cc15514e3e
